@@ -11,10 +11,6 @@
         <div class="max-w-3xl mx-auto">
             <h2 class="text-center text-2xl font-serif text-amber-900 mb-6">お問い合わせ詳細</h2>
 
-            @php
-                $genderLabels = [1 => '男性', 2 => '女性', 3 => 'その他'];
-            @endphp
-
             <!-- 詳細表示 -->
             <div class="border border-gray-200 rounded overflow-hidden">
                 <div class="grid grid-cols-3 border-b border-gray-200">
@@ -31,7 +27,7 @@
                         <span class="text-sm font-medium text-white">性別</span>
                     </div>
                     <div class="col-span-2 bg-white px-6 py-4 flex items-center">
-                        <span class="text-[#6b5744]">{{ $genderLabels[$contact->gender] ?? '' }}</span>
+                        <span class="text-[#6b5744]">{{ $genderLabels[$contact->gender] ?? '未回答' }}</span>
                     </div>
                 </div>
 

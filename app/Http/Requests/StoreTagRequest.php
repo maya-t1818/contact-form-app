@@ -3,9 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
-class TagRequest extends FormRequest
+class StoreTagRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,23 +21,17 @@ class TagRequest extends FormRequest
      */
     public function rules(): array
     {
-        $tagId = $this->route('tag')?->id;
-
         return [
-            'name' => [
-                'required',
-                'string',
-                'max:50',
-                Rule::unique('tags', 'name')->ignore($tagId), 
-            ],
+            'name' => 'required|string|max:50|unique:tags,name',
         ];
     }
 
-    public function attributes(): array
+    public function messages(): array
     {
         return [
-            'name' => 'タグ名',
+            'name.required' => 'タグ名を入力してください',
+            'name.max' => 'タグ名は50文字以内で入力してください',
+            'name.unique' => 'このタグ名は既に使用されています',
         ];
     }
-    
 }

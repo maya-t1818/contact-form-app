@@ -35,23 +35,7 @@ class ContactRequest extends FormRequest
             'tag_ids.*'   => 'integer|exists:tags,id',
         ];  
     }
-
-    public function attributes(): array
-    {
-        return [
-            'first_name'  => '姓',
-            'last_name'   => '名',
-            'gender'      => '性別',
-            'email'       => 'メールアドレス',
-            'tel'         => '電話番号',
-            'address'     => '住所',
-            'building'    => '建物名',
-            'category_id' => 'お問い合わせの種類',
-            'detail'      => 'お問い合わせ内容',
-            'tag_ids'     => 'タグ',
-        ];
-    }
-
+    
     public function messages(): array
     {
         return [
