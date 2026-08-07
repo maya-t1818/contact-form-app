@@ -87,10 +87,7 @@
                             <tr>
                                 <td class="px-6 py-4 text-sm text-gray-700">{{ $contact->first_name }} {{ $contact->last_name }}</td>
                                 <td class="px-6 py-4 text-sm text-gray-700">
-                                    @php
-                                        $genderLabels = [1 => '男性', 2 => '女性', 3 => 'その他'];
-                                    @endphp
-                                    {{ $genderLabels[$contact->gender] ?? '' }}
+                                    {{ $genderLabels[$contact->gender] ?? '未回答' }}
                                 </td>
                                 <td class="px-6 py-4 text-sm text-gray-700">{{ $contact->email }}</td>
                                 <td class="px-6 py-4 text-sm text-gray-700">{{ $contact->category->content ?? '' }}</td>

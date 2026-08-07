@@ -16,9 +16,9 @@ class ContactController extends Controller
     {
         $categories = Category::all();
         $tags = Tag::all();
-        $input = $request->old()?$request->old():$request->session()->get('contact_input');  
+        $inputs = $request->old() ?: $request->session()->get('contact_input', $request->all());
 
-        return view ('contact.index', compact('categories', 'tags', 'input'));
+        return view ('contact.index', compact('categories', 'tags','inputs'));
     }
 
     public function confirm(ContactRequest $request)
@@ -27,6 +27,10 @@ class ContactController extends Controller
         $request->session()->put('contact_input', $validated);
         $category = Category::find($validated['category_id']);
         $tags = Tag::findMany($validated['tag_ids'] ?? []);
+
+        if (empty($request->old()) && $request->session()->has('contact_input')) {
+        $request->session()->flashInput($request->session()->get('contact_input'));
+    }
 
         return view('contact.confirm', compact('validated', 'category', 'tags'));
     }
