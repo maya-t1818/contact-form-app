@@ -39,51 +39,6 @@ class AdminController extends Controller
         return view('admin.show', ['user' => auth()->user()], compact('contact', 'genderLabels'));
     }
 
-    public function export(indexContactRequest $request): StreamedResponse
-    {
-        $contacts = $this->buildSearchQuery($request)->latest()->get();
-
-        $response = new StreamedResponse(function () use ($contacts) {
-            $stream = fopen('php://output', 'w');
-
-            fwrite($stream, "\xEF\xBB\xBF");
-
-            fputcsv($stream, [
-                'ID', '氏名', '性別', 'メール', '電話', '住所', '建物', 'カテゴリ', '内容', '作成日時'
-            ]);
-
-            $genderMap = [
-                '1.男性' => '男性',
-                '2.女性' => '女性',
-                '3.その他' => 'その他',
-            ];
-
-            foreach ($contacts as $contact) {
-                $genderStr = $genderMap[$contact->gender] ?? '未回答';
-
-                fputcsv($stream, [
-                    $contact->id,
-                    $contact->first_name . ' ' . $contact->last_name, 
-                    $genderStr,
-                    $contact->email,
-                    $contact->tel, 
-                    $contact->address,
-                    $contact->building,
-                    $contact->category ? $contact->category->content : '',
-                    $contact->detail, 
-                    $contact->created_at->format('Y-m-d H:i:s'),
-                ]);
-            }
-
-            fclose($stream);
-        });
-
-        $response->headers->set('Content-Type', 'text/csv; charset=UTF-8');
-        $response->headers->set('Content-Disposition', 'attachment; filename="contacts_' . date('YmdHis') . '.csv"');
-
-        return $response;
-    }
-
     private function buildSearchQuery(indexContactRequest $request)
     {
         $query = Contact::query()->with('category', 'tags');

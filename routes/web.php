@@ -28,12 +28,11 @@ Route::post('/contacts', [ContactController::class, 'store'])
     ->middleware('throttle:contact')
     ->name('contact.store');
 Route::get('/contacts/thanks', [ContactController::class, 'thanks'])->name('contact.thanks');
-
+Route::get('/contacts/export', [ContactController::class, 'export'])->name('contacts.export');
 Route::middleware(['auth'])->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
     Route::get('/admin/contacts', [AdminController::class, 'index'])->name('admin.contacts.index');
     Route::get('/admin/contacts/{id}', [AdminController::class, 'show'])->name('admin.show');
-    Route::get('/admin/export', [AdminController::class, 'export'])->name('admin.export');
     Route::delete('/admin/contacts/{id}', [AdminController::class, 'destroy'])->name('admin.contacts.destroy');
 
     Route::post('/admin/tags', [TagController::class, 'store'])->name('admin.tags.index');
