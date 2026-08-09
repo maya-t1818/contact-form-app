@@ -44,14 +44,14 @@ class ContactController extends Controller
         }
 
         $contact = Contact::create([
-            'first_name'  => $input['first_name'],
-            'last_name'   => $input['last_name'],
-            'gender'      => $input['gender'],
-            'email'       => $input['email'],
-            'tel'         => $input['tel'],
-            'address'     => $input['address'],
-            'building'    => $input['building'] ?? null,
-            'detail'      => $input['detail'],
+            'first_name' => $input['first_name'],
+            'last_name' => $input['last_name'],
+            'gender' => $input['gender'],
+            'email' => $input['email'],
+            'tel' => $input['tel'],
+            'address' => $input['address'],
+            'building' => $input['building'] ?? null,
+            'detail' => $input['detail'],
             'category_id' => $input['category_id'],
         ]);
 
