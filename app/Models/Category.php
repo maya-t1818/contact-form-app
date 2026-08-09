@@ -18,5 +18,4 @@ class Category extends Model
     {
         return $this->hasMany(Contact::class);
     }
-    
 }

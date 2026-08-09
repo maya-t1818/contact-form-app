@@ -19,6 +19,5 @@ class ContactSeeder extends Seeder
             $contact->tags()->attach($tagIds->random(rand(1, 3)));
         });
 
-
     }
 }

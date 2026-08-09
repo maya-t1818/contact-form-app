@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('category_id')->constrained()->onDelete('cascade');
             $table->string('first_name', 255);
             $table->string('last_name', 255);
-            $table->enum('gender', ['1.男性', '2.女性', '3.その他']);
+            $table->unsignedTinyInteger('gender')->comment('1:男性、2:女性、3:その他');
             $table->string('email', 255);
             $table->string('tel', 11);
             $table->string('address', 255);
