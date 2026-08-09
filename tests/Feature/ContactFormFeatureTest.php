@@ -162,14 +162,11 @@ class ContactFormFeatureTest extends TestCase
     {
         $tag = Tag::factory()->create(['name' => '初期タグ']);
 
-        $this->get("/admin/tags/{$tag->id}/edit")->assertRedirect('/login');
         $this->post('/admin/tags', ['name' => '新タグ'])->assertRedirect('/login');
         $this->put("/admin/tags/{$tag->id}", ['name' => '更新タグ'])->assertRedirect('/login');
         $this->delete("/admin/tags/{$tag->id}")->assertRedirect('/login');
 
         $user = User::factory()->create();
-
-        $this->actingAs($user)->get("/admin/tags/{$tag->id}/edit")->assertStatus(200);
 
         $this->actingAs($user)->post('/admin/tags', ['name' => '新規作成タグ'])->assertRedirect('/admin');
         $this->assertDatabaseHas('tags', ['name' => '新規作成タグ']);
@@ -195,7 +192,7 @@ class ContactFormFeatureTest extends TestCase
             'created_at' => now(),
         ]);
 
-        $response = $this->actingAs($user)->get('/admin/export');
+        $response = $this->actingAs($user)->get('/contacts/export');
 
         $response->assertStatus(200);
         $response->assertHeader('Content-Type', 'text/csv; charset=UTF-8');

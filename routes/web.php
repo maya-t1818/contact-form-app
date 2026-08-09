@@ -11,27 +11,22 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 */
 
-Route::redirect('/', '/contacts');
+Route::get('/', [ContactController::class, 'index'])->name('contact.index');
+Route::get('/contacts', [ContactController::class, 'index']);
+Route::post('/contacts/confirm', [ContactController::class, 'confirm'])->name('contact.confirm');
+Route::post('/contacts', [ContactController::class, 'store'])->name('contact.store');
+Route::get('/contacts/thanks', [ContactController::class, 'thanks'])->name('contact.thanks');
 
-// 一般向け問い合わせルーティング
-Route::prefix('contacts')->name('contact.')->group(function () {
-    Route::get('/', [ContactController::class, 'index'])->name('index');
-    Route::get('/thanks', [ContactController::class, 'thanks'])->name('thanks');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
+    Route::get('/admin/contacts', [AdminController::class, 'index'])->name('admin.contacts.index');
 
-    Route::middleware('throttle:contact')->group(function () {
-        Route::post('/confirm', [ContactController::class, 'confirm'])->name('confirm');
-        Route::post('/', [ContactController::class, 'store'])->name('store');
-    });
+    Route::get('/contacts/export', [AdminController::class, 'export'])->name('admin.export');
+
+    Route::get('/admin/contacts/{id}', [AdminController::class, 'show'])->name('admin.show');
+    Route::delete('/admin/contacts/{id}', [AdminController::class, 'destroy'])->name('admin.contacts.destroy');
+
+    Route::post('/admin/tags', [TagController::class, 'store'])->name('admin.tags.store');
+    Route::put('/admin/tags/{tag}', [TagController::class, 'update'])->name('admin.tags.update');
+    Route::delete('/admin/tags/{tag}', [TagController::class, 'destroy'])->name('admin.tags.destroy');
 });
-
-Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
-
-    Route::get('/', [AdminController::class, 'index'])->name('index');
-
-    Route::get('/contacts/{id}', [AdminController::class, 'show'])->name('show');
-    Route::delete('/contacts/{id}', [AdminController::class, 'destroy'])->name('contacts.destroy');
-
-    Route::resource('tags', TagController::class)->only(['edit', 'store', 'update', 'destroy']);
-});
-
-Route::middleware('auth')->get('/contacts/export', [AdminController::class, 'export'])->name('contacts.export');

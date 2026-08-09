@@ -5,7 +5,7 @@
 - ER図を作成し、リレーションを確認。モデルとマイグレーションを作成。seederとfactoryを使いマイグレーション実行
 - お問合わせフォームController作成(ContactController)(ContactRequestでバリデーション)
 - 管理画面Controller作成(AdminController)(IndexContactRequest,StoreTagRequest,UpdateTagRequestでバリデーション)
-- プレフィックスをまとめ、グループに設定しroute定義
+- グループに設定しroute定義
 - 公開API実装(Controller,Resource,api.phpを作成)PostmanでOK確認
 - テスト(FeatureとUnitに分けてTest.phpを作成)全テストがpassする事を確認
 
