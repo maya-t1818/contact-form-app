@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Contact;
-use App\Models\Category;
-use App\Models\Tag;
-use Illuminate\Http\Request;
 use App\Http\Requests\indexContactRequest;
-use Symfony\Component\HttpFoundation\StreamedResponse; 
+use App\Models\Category;
+use App\Models\Contact;
+use App\Models\Tag;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class AdminController extends Controller
 {
@@ -49,7 +48,7 @@ class AdminController extends Controller
             fwrite($stream, "\xEF\xBB\xBF");
 
             fputcsv($stream, [
-                'ID', '氏名', '性別', 'メール', '電話', '住所', '建物', 'カテゴリ', '内容', '作成日時'
+                'ID', '氏名', '性別', 'メール', '電話', '住所', '建物', 'カテゴリ', '内容', '作成日時',
             ]);
 
             $genderMap = [
@@ -63,14 +62,14 @@ class AdminController extends Controller
 
                 fputcsv($stream, [
                     $contact->id,
-                    $contact->first_name . ' ' . $contact->last_name, 
+                    $contact->first_name.' '.$contact->last_name,
                     $genderStr,
                     $contact->email,
-                    $contact->tel, 
+                    $contact->tel,
                     $contact->address,
                     $contact->building,
                     $contact->category ? $contact->category->content : '',
-                    $contact->detail, 
+                    $contact->detail,
                     $contact->created_at->format('Y-m-d H:i:s'),
                 ]);
             }
@@ -79,7 +78,7 @@ class AdminController extends Controller
         });
 
         $response->headers->set('Content-Type', 'text/csv; charset=UTF-8');
-        $response->headers->set('Content-Disposition', 'attachment; filename="contacts_' . date('YmdHis') . '.csv"');
+        $response->headers->set('Content-Disposition', 'attachment; filename="contacts_'.date('YmdHis').'.csv"');
 
         return $response;
     }
@@ -92,9 +91,9 @@ class AdminController extends Controller
             $keyword = $request->input('keyword');
 
             $query->where(function ($q) use ($keyword) {
-                $q->where('last_name', 'like', '%' . $keyword . '%')
-                ->orWhere('first_name', 'like', '%' . $keyword . '%')
-                ->orWhere('email', 'like', '%' . $keyword . '%');
+                $q->where('last_name', 'like', '%'.$keyword.'%')
+                    ->orWhere('first_name', 'like', '%'.$keyword.'%')
+                    ->orWhere('email', 'like', '%'.$keyword.'%');
             });
         }
 
@@ -124,6 +123,6 @@ class AdminController extends Controller
         $contact = Contact::findOrFail($id);
         $contact->delete();
 
-        return redirect()->route('admin')->with('success', 'お問い合わせを削除しました。');
+        return redirect()->route('admin.index')->with('success', 'お問い合わせを削除しました。');
     }
 }

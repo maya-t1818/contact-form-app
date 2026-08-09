@@ -2,19 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Tag;
-use Illuminate\Http\Request;
 use App\Http\Requests\StoreTagRequest;
+use App\Models\Tag;
 
 class TagController extends Controller
 {
-
     public function store(StoreTagRequest $request)
     {
         Tag::create($request->validated());
 
         return redirect()->route('admin.index')->with('success', 'タグを作成しました');
     }
+
     public function edit(Tag $tag)
     {
         return view('admin.tags.edit', compact('tag'));
@@ -34,4 +33,3 @@ class TagController extends Controller
         return redirect()->route('admin.index')->with('success', 'タグを削除しました。');
     }
 }
-

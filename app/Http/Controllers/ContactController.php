@@ -2,23 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Http\Requests\ContactRequest;
-use App\Models\Contact;
 use App\Models\Category;
+use App\Models\Contact;
 use App\Models\Tag;
-
+use Illuminate\Http\Request;
 
 class ContactController extends Controller
 {
-
     public function index(Request $request)
     {
         $categories = Category::all();
         $tags = Tag::all();
         $inputs = $request->old() ?: $request->session()->get('contact_input', $request->all());
 
-        return view ('contact.index', compact('categories', 'tags','inputs'));
+        return view('contact.index', compact('categories', 'tags', 'inputs'));
     }
 
     public function confirm(ContactRequest $request)
@@ -29,17 +27,17 @@ class ContactController extends Controller
         $tags = Tag::findMany($validated['tag_ids'] ?? []);
 
         if (empty($request->old()) && $request->session()->has('contact_input')) {
-        $request->session()->flashInput($request->session()->get('contact_input'));
-    }
+            $request->session()->flashInput($request->session()->get('contact_input'));
+        }
 
         return view('contact.confirm', compact('validated', 'category', 'tags'));
     }
-    
+
     public function store(Request $request)
     {
         $input = $request->session()->get('contact_input');
 
-        if (!$input) {
+        if (! $input) {
             return redirect()->route('contact.index');
         }
         if ($request->has('back')) {
@@ -47,15 +45,15 @@ class ContactController extends Controller
         }
 
         $contact = Contact::create([
-            'first_name'  => $input['first_name'],
-            'last_name'   => $input['last_name'],
-            'gender'      => $input['gender'],
-            'email'       => $input['email'],
-            'tel'         => $input['tel'],
-            'address'     => $input['address'],
-            'building'    => $input['building'] ?? null,
-            'detail'      => $input['detail'],
-            'category_id' => $input['category_id'], 
+            'first_name' => $input['first_name'],
+            'last_name' => $input['last_name'],
+            'gender' => $input['gender'],
+            'email' => $input['email'],
+            'tel' => $input['tel'],
+            'address' => $input['address'],
+            'building' => $input['building'] ?? null,
+            'detail' => $input['detail'],
+            'category_id' => $input['category_id'],
         ]);
 
         if (isset($input['tag_ids'])) {
@@ -72,5 +70,4 @@ class ContactController extends Controller
     {
         return view('contact.thanks');
     }
-    
 }
