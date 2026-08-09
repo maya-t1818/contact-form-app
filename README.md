@@ -66,7 +66,7 @@ erDiagram
 ```
 
 
-##　環境構築手順
+## 環境構築手順
 - Laravelプロジェクトの作成 (Laravel 10.x)
 - Laravel Sailのインストール
 - .env ファイルの設定
