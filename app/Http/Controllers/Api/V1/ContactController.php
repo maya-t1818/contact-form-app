@@ -2,14 +2,12 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\IndexContactRequest;
+use App\Http\Requests\Api\V1\StoreContactRequest;
 use App\Http\Requests\Api\V1\UpdateContactRequest;
 use App\Http\Resources\ContactResource;
 use App\Models\Contact;
-use App\Http\Requests\Api\V1\StoreContactRequest;
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-
 
 class ContactController extends Controller
 {
@@ -24,9 +22,9 @@ class ContactController extends Controller
             $keyword = $request->input('keyword');
 
             $query->where(function ($q) use ($keyword) {
-                $q->where('first_name', 'like', '%' . $keyword . '%')
-                ->orWhere('last_name', 'like', '%' . $keyword . '%')
-                ->orWhere('email', 'like', '%' . $keyword . '%');
+                $q->where('first_name', 'like', '%'.$keyword.'%')
+                    ->orWhere('last_name', 'like', '%'.$keyword.'%')
+                    ->orWhere('email', 'like', '%'.$keyword.'%');
             });
         }
 
@@ -53,7 +51,6 @@ class ContactController extends Controller
             ->response()
             ->setStatusCode(201);
     }
-    
 
     /**
      * Display the specified resource.
@@ -87,8 +84,6 @@ class ContactController extends Controller
     {
         $contact->delete();
 
-        return response()->json(null, 204); 
+        return response()->json(null, 204);
     }
-    
 }
-

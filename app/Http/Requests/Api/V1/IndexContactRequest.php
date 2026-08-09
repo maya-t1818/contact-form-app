@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Api\V1;
 
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class IndexContactRequest extends FormRequest
@@ -17,17 +18,17 @@ class IndexContactRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
         return [
-            'keyword'     => 'nullable|string|max:255',
-            'gender'      => 'nullable|int|in:1,2,3',
+            'keyword' => 'nullable|string|max:255',
+            'gender' => 'nullable|int|in:1,2,3',
             'category_id' => 'nullable|int|exists:categories,id',
-            'date'        => 'nullable|date',
-            'page'        => 'nullable|int|min:1',
-            'per_page'    => 'nullable|int|min:1|max:100',
+            'date' => 'nullable|date',
+            'page' => 'nullable|int|min:1',
+            'per_page' => 'nullable|int|min:1|max:100',
         ];
     }
 }
