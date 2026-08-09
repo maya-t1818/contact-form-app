@@ -26,10 +26,6 @@ class ContactController extends Controller
         $category = Category::find($validated['category_id']);
         $tags = Tag::findMany($validated['tag_ids'] ?? []);
 
-        if (empty($request->old()) && $request->session()->has('contact_input')) {
-            $request->session()->flashInput($request->session()->get('contact_input'));
-        }
-
         return view('contact.confirm', compact('validated', 'category', 'tags'));
     }
 
