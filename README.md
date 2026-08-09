@@ -64,15 +64,17 @@ erDiagram
     contacts ||--o{ contact_tag : "多対多の中間リレーション"
     tags ||--o{ contact_tag : "多対多の中間リレーション"
 ```
+
+
 ##　環境構築手順
-1. Laravelプロジェクトの作成 (Laravel 10.x)
-2. Laravel Sailのインストール
-3. .env ファイルの設定
-4. フロントエンドのセットアップ (Vite & Tailwind CSS)
-5. phpMyAdminの追加
-6. Sailの起動とエイリアス設定
-7. アプリケーションキーの生成
-8. データベースのマイグレーションと初期データ投入
+- Laravelプロジェクトの作成 (Laravel 10.x)
+- Laravel Sailのインストール
+- .env ファイルの設定
+- フロントエンドのセットアップ (Vite & Tailwind CSS)
+- phpMyAdminの追加
+- Sailの起動とエイリアス設定
+- アプリケーションキーの生成
+- データベースのマイグレーションと初期データ投入
 
 ## 使用技術
 - Laravel 10, MySQL 8.0, Nginx, Docker
