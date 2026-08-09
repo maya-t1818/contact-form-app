@@ -18,9 +18,9 @@ class AdminController extends Controller
         $categories = Category::all();
         $tags = Tag::all();
         $genderLabels = [
-            '1.男性' => '男性',
-            '2.女性' => '女性',
-            '3.その他' => 'その他',
+            1 => '男性',
+            2 => '女性',
+            3 => 'その他',
         ];
 
         return view('admin.index', compact('contacts', 'categories', 'tags', 'genderLabels'));
@@ -30,9 +30,9 @@ class AdminController extends Controller
     {
         $contact = Contact::with('category', 'tags')->findOrFail($id);
         $genderLabels = [
-            '1.男性' => '男性',
-            '2.女性' => '女性',
-            '3.その他' => 'その他',
+            1 => '男性',
+            2 => '女性',
+            3 => 'その他',
         ];
 
         return view('admin.show', ['user' => auth()->user()], compact('contact', 'genderLabels'));
@@ -52,9 +52,9 @@ class AdminController extends Controller
             ]);
 
             $genderMap = [
-                '1.男性' => '男性',
-                '2.女性' => '女性',
-                '3.その他' => 'その他',
+                1 => '男性',
+                2 => '女性',
+                3 => 'その他',
             ];
 
             foreach ($contacts as $contact) {
@@ -98,13 +98,7 @@ class AdminController extends Controller
         }
 
         if ($request->filled('gender') && $request->input('gender') != '0') {
-            $genderValues = [
-                '1' => '1.男性',
-                '2' => '2.女性',
-                '3' => '3.その他',
-            ];
-
-            $query->where('gender', $genderValues[$request->input('gender')]);
+            $query->where('gender', $request->input('gender'));
         }
 
         if ($request->filled('category_id')) {

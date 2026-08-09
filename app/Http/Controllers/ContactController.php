@@ -14,9 +14,15 @@ class ContactController extends Controller
     {
         $categories = Category::all();
         $tags = Tag::all();
-        $inputs = $request->old() ?: $request->session()->get('contact_input', $request->all());
+        $inputs = $request->old();
+        if (empty($inputs)) {
+            $inputs = $request->session()->get('contact_input', []);
+        }
 
-        return view('contact.index', compact('categories', 'tags', 'inputs'));
+        return response()->view('contact.index', compact('categories', 'tags', 'inputs'))
+            ->header('Cache-Control', 'no-cache, no-store, max-age=0, must-revalidate')
+            ->header('Pragma', 'no-cache')
+            ->header('Expires', 'Sat, 01 Jan 2000 00:00:00 GMT');
     }
 
     public function confirm(ContactRequest $request)
@@ -36,19 +42,16 @@ class ContactController extends Controller
         if (! $input) {
             return redirect()->route('contact.index');
         }
-        if ($request->has('back')) {
-            return redirect()->route('contact.index')->withInput($input);
-        }
 
         $contact = Contact::create([
-            'first_name' => $input['first_name'],
-            'last_name' => $input['last_name'],
-            'gender' => $input['gender'],
-            'email' => $input['email'],
-            'tel' => $input['tel'],
-            'address' => $input['address'],
-            'building' => $input['building'] ?? null,
-            'detail' => $input['detail'],
+            'first_name'  => $input['first_name'],
+            'last_name'   => $input['last_name'],
+            'gender'      => $input['gender'],
+            'email'       => $input['email'],
+            'tel'         => $input['tel'],
+            'address'     => $input['address'],
+            'building'    => $input['building'] ?? null,
+            'detail'      => $input['detail'],
             'category_id' => $input['category_id'],
         ]);
 
@@ -59,7 +62,6 @@ class ContactController extends Controller
         $request->session()->forget('contact_input');
 
         return redirect()->route('contact.thanks');
-
     }
 
     public function thanks()

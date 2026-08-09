@@ -22,7 +22,7 @@ class ContactFactory extends Factory
         $faker = Faker::create('ja_JP');
 
         return [
-            'category_id' => Category::factory(),
+            'category_id' => Category::inRandomOrder()->first()?->id ?? Category::factory(),
             'first_name' => $this->faker->firstName(),
             'last_name' => $this->faker->lastName(),
             'gender' => $this->faker->numberBetween(1, 3),
