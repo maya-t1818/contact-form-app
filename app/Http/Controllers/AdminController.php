@@ -82,7 +82,7 @@ class AdminController extends Controller
 
         return $response;
     }
-
+  
     private function buildSearchQuery(indexContactRequest $request)
     {
         $query = Contact::query()->with('category', 'tags');
