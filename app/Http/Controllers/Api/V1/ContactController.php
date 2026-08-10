@@ -41,7 +41,7 @@ class ContactController extends Controller
     public function store(StoreContactRequest $request)
     {
         $validated = $request->validated();
-        $contact = Contact::create($validated());
+        $contact = Contact::create($validated);
 
         if ($request->has('tag_ids')) {
             $contact->tags()->attach($request->input('tag_ids'));
