@@ -26,6 +26,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/admin/contacts/{id}', [AdminController::class, 'show'])->name('admin.show');
     Route::delete('/admin/contacts/{id}', [AdminController::class, 'destroy'])->name('admin.contacts.destroy');
 
+    Route::get('/admin/tags/{tag}/edit', [TagController::class, 'edit'])->name('admin.tags.edit');
     Route::post('/admin/tags', [TagController::class, 'store'])->name('admin.tags.store');
     Route::put('/admin/tags/{tag}', [TagController::class, 'update'])->name('admin.tags.update');
     Route::delete('/admin/tags/{tag}', [TagController::class, 'destroy'])->name('admin.tags.destroy');
