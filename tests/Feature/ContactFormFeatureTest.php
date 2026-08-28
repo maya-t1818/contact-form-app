@@ -128,9 +128,7 @@ class ContactFormFeatureTest extends TestCase
 
         $response->assertStatus(200);
 
-        $response->assertViewHas('contacts', function ($contacts) {
-            return $contacts->count() === 7;
-        });
+        $this->assertEquals(7, $response->viewData('contacts')->count());
     }
 
     /** @test */
