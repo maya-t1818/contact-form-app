@@ -189,7 +189,8 @@ sail artisan test
 
 ```bash
 sail artisan test --coverage
-```. 
+```
+
 
 ## 使用技術
 - Laravel 10, MySQL 8.0, Nginx, Docker
