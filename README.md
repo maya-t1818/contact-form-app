@@ -67,86 +67,129 @@ erDiagram
 
 
 ## 環境構築手順
-1.リポジトリをクローン
+1. **リポジトリをクローン**
 
-git clone https://github.com/coachtech-material/ExampleAnswer-ConfirmationTest-ContactForm.git
-2..envファイルの準備
+    ```bash
+    git clone https://github.com/coachtech-material/ExampleAnswer-ConfirmationTest-ContactForm.git
+    ```
 
-.env.example をコピーして .env を作成します。
+2. **.envファイルの準備**
 
-cp .env.example .env
-.env ファイル内の以下のDB接続情報を確認・設定します。.env.example のデフォルト値はSail向けではないため、以下のように変更してください。
+    `.env.example` をコピーして `.env` を作成します。
 
-DB_CONNECTION=mysql
-DB_HOST=mysql
-DB_PORT=3306
-DB_DATABASE=laravel
-DB_USERNAME=sail
-DB_PASSWORD=password
-3.Composer依存パッケージのインストール
+    ```bash
+    cp .env.example .env
+    ```
 
-プロジェクトの初回セットアップ時は、vendor ディレクトリが存在しないため sail コマンドを使用できません。 以下のDockerコマンドを実行して、コンテナ内で composer install を実行します。
+    `.env` ファイル内の以下のDB接続情報を確認・設定します。`.env.example` のデフォルト値はSail向けではないため、以下のように変更してください。
 
-docker run --rm \
-    -u "$(id -u):$(id -g)" \
-    -v "$(pwd):/var/www/html" \
-    -w /var/www/html \
-    laravelsail/php82-composer:latest \
-    composer install --ignore-platform-reqs
-4.Laravel Sailの起動
+    ```ini
+    DB_CONNECTION=mysql
+    DB_HOST=mysql
+    DB_PORT=3306
+    DB_DATABASE=laravel
+    DB_USERNAME=sail
+    DB_PASSWORD=password
+    ```
 
-以下のコマンドでDockerコンテナを起動します。
+3. **Composer依存パッケージのインストール**
 
-./vendor/bin/sail up -d
-エイリアスの設定（推奨）
+    プロジェクトの初回セットアップ時は、`vendor` ディレクトリが存在しないため `sail` コマンドを使用できません。
+    以下のDockerコマンドを実行して、コンテナ内で `composer install` を実行します。
 
-毎回 ./vendor/bin/sail と入力するのは手間なので、エイリアスを設定すると便利です。
+    ```bash
+    docker run --rm \
+        -u "$(id -u):$(id -g)" \
+        -v "$(pwd):/var/www/html" \
+        -w /var/www/html \
+        laravelsail/php82-composer:latest \
+        composer install --ignore-platform-reqs
+    ```
 
-alias sail='[ -f sail ] && bash sail || bash vendor/bin/sail'
-5.アプリケーションキーの生成
+4. **Laravel Sailの起動**
 
-sail artisan key:generate
-6.データベースのマイグレーションと初期データ投入
+    以下のコマンドでDockerコンテナを起動します。
 
-以下のコマンドでテーブルを作成し、ダミーデータを投入します。
+    ```bash
+    ./vendor/bin/sail up -d
+    ```
 
-sail artisan migrate:fresh --seed
-このコマンドの入力後、下記のエラーが表示されることがあります。
+    > **エイリアスの設定（推奨）**
+    >
+    > 毎回 `./vendor/bin/sail` と入力するのは手間なので、エイリアスを設定すると便利です。
+    >
+    > ```bash
+    > alias sail='[ -f sail ] && bash sail || bash vendor/bin/sail'
+    > ```
 
-   Illuminate\Database\QueryException 
-  SQLSTATE[HY000] [1044] Access denied for user 'sail'@'%' to database 'contact-form-app' (Connection: mysql, SQL: select table_name as `name`,         (data_length + index_length) as `size`, table_comment as `comment`, engine as `engine`, table_collation as `collation` from information_schema.tables where table_schema = 'contact-form-app' and table_type in ('BASE TABLE', 'SYSTEM VERSIONED') order by table_name)
+5. **アプリケーションキーの生成**
 
-  at vendor/laravel/framework/src/Illuminate/Database/Connection.php:829
-    825▕                     $this->getName(), $query, $this->prepareBindings($bindings), $e
-    826▕                 );
-    827▕             }
-    828▕ 
-  ➜ 829▕             throw new QueryException(
-    830▕                 $this->getName(), $query, $this->prepareBindings($bindings), $e
-    831▕             );
-    832▕         }
-    833▕     }
+    ```bash
+    sail artisan key:generate
+    ```
 
-  +43 vendor frames 
+6. **データベースのマイグレーションと初期データ投入**
 
-  44  artisan:35
-      Illuminate\Foundation\Console\Kernel::handle()
-このエラーはコンテナ内にデータが残っており、エラーが生じているケースなどがあります。 その場合は、以下のコマンドを順に実行して各コンテナを再起動して下さい。
+    以下のコマンドでテーブルを作成し、ダミーデータを投入します。
 
-sail down -v
-sail up -d　//コマンド実行後にSQLコンテナが立ち上がるまで時間がかかります。30秒ほどお待ちください。
-sail artisan migrate:fresh --seed
-7.フロントエンドのビルド
+    ```bash
+    sail artisan migrate:fresh --seed
+    ```
+    このコマンドの入力後、下記のエラーが表示されることがあります。
+    ```bash
+       Illuminate\Database\QueryException 
+      SQLSTATE[HY000] [1044] Access denied for user 'sail'@'%' to database 'contact-form-app' (Connection: mysql, SQL: select table_name as `name`,         (data_length + index_length) as `size`, table_comment as `comment`, engine as `engine`, table_collation as `collation` from information_schema.tables where table_schema = 'contact-form-app' and table_type in ('BASE TABLE', 'SYSTEM VERSIONED') order by table_name)
 
-sail npm install
-sail npm install alpinejs
-sail npm run dev
-npm run dev は開発中は起動したままにしてください。
+      at vendor/laravel/framework/src/Illuminate/Database/Connection.php:829
+        825▕                     $this->getName(), $query, $this->prepareBindings($bindings), $e
+        826▕                 );
+        827▕             }
+        828▕ 
+      ➜ 829▕             throw new QueryException(
+        830▕                 $this->getName(), $query, $this->prepareBindings($bindings), $e
+        831▕             );
+        832▕         }
+        833▕     }
 
-8.アプリケーションへのアクセス
+      +43 vendor frames 
 
-ブラウザで http://localhost にアクセスします。
+      44  artisan:35
+          Illuminate\Foundation\Console\Kernel::handle()
+    ```
+    このエラーはコンテナ内にデータが残っており、エラーが生じているケースなどがあります。
+    その場合は、以下のコマンドを順に実行して各コンテナを再起動して下さい。
+    ```Bash
+    sail down -v
+    sail up -d　//コマンド実行後にSQLコンテナが立ち上がるまで時間がかかります。30秒ほどお待ちください。
+    sail artisan migrate:fresh --seed
+    ```
+    
 
+7. **フロントエンドのビルド**
+
+    ```bash
+    sail npm install
+    sail npm install alpinejs
+    sail npm run dev
+    ```
+
+    `npm run dev` は開発中は起動したままにしてください。
+
+8. **アプリケーションへのアクセス**
+
+    ブラウザで [http://localhost](http://localhost) にアクセスします。
+
+## テスト実行
+
+```bash
+sail artisan test
+```
+
+カバレッジ付きで実行する場合:
+
+```bash
+sail artisan test --coverage
+```. 
 
 ## 使用技術
 - Laravel 10, MySQL 8.0, Nginx, Docker
